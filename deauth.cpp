@@ -7,8 +7,8 @@
 using namespace std;
 
 void usage() {
-    cout << "Usage: deauth-attack <interface> <ap mac> [<station mac> [-auth]]\n";
-    cout << "Sample: deauth-attack mon0 00:11:22:33:44:55 66:77:88:99:AA:BB\n";
+    cout << "Usage: deauth <interface> <ap mac> [<station mac> [-auth]]\n";
+    cout << "Sample: deauth mon0 00:11:22:33:44:55 66:77:88:99:AA:BB\n";
 }
 
 void runDeauthAttack(const string& interface, const string& apMac, const string& stationMac = "", bool auth = false) {
@@ -47,9 +47,10 @@ int main(int argc, char* argv[]) {
         auth = true;
     }
 
-    runDeauthAttack(interface, apMac, stationMac, auth);
-
-    this_thread::sleep_for(chrono::seconds(1));
-
+    while (true) { // 무한 루프
+        runDeauthAttack(interface, apMac, stationMac, auth);
+        this_thread::sleep_for(chrono::seconds(1)); // 1초 대기
+    }
+    
     return 0;
 }
